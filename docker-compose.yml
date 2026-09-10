@@ -1,0 +1,36 @@
+version: "3.8"
+
+x-gui-common: &gui-common
+  environment:
+    - DISPLAY=${DISPLAY}
+    - QT_X11_NO_MITSHM=1
+  volumes:
+    - /tmp/.X11-unix:/tmp/.X11-unix:rw
+  network_mode: host 
+  ipc: host
+  privileged: false
+  stdin_open: true
+  tty: true
+
+services:
+  vins-fusion:
+    <<: *gui-common
+    build:
+      context: ./vins-fusion
+    image: slam/vins-fusion:latest
+    container_name: vins_fusion
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ./data:/root/data
+      - ./output/vins-fusion:/root/output
+
+  orb-slam3:
+    <<: *gui-common
+    build:
+      context: ./orb-slam3
+    image: slam/orbslam3:latest
+    container_name: orb_slam3
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ./data:/root/data
+      - ./output/orb-slam3:/root/output
