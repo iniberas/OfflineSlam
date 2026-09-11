@@ -34,3 +34,14 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ./data:/root/data
       - ./output/orb-slam3:/root/output
+
+  open-vins:
+    <<: *gui-common
+    build:
+      context: ./open-vins
+    image: slam/openvins:latest
+    container_name: open-vins
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ./data:/root/data
+      - ./output/open-vins:/root/output

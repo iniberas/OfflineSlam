@@ -8,7 +8,6 @@ xhost +local:docker
 ## 2. Build
 
 ```bash
-cd slam-docker
 docker compose build
 ```
 This will take a while the first time (compiling OpenCV, Ceres, Pangolin, etc).
@@ -17,13 +16,10 @@ This will take a while the first time (compiling OpenCV, Ceres, Pangolin, etc).
 
 ```bash
 docker compose run --rm vins-fusion bash
-# inside container:
 roslaunch vins vins_rviz.launch
-# in a second terminal, attach to same container:
-docker exec -it vins_fusion bash
-rosrun vins vins_node /root/catkin_ws/src/VINS-Fusion/config/euroc/euroc_stereo_imu_config.yaml
-# then play your rosbag (mounted at /root/data) from a third terminal
-rosbag play /root/data/MH_01_easy.bag
+rosrun vins vins_node /root/data/camera_calibration.yaml
+rosrun global_fusion global_fusion_node /gps:=/mavros/global_position/global
+rosbag play /root/data/rosbag_bener.bag
 ```
 
 ## 4. Run ORB-SLAM3
